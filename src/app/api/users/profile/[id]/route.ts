@@ -20,15 +20,8 @@ export async function DELETE(request: NextRequest, { params }: Props) {
             return NextResponse.json({ message: 'User Not Found' }, { status: 404 });
         }
 
-        //@ts-ignore
         const authToken:string = request.headers.get('authToken') as string;
-
-        if (!authToken) {
-            return NextResponse.json({ message: 'Not Token Provided ,Access Denied' }, { status: 401 }); // 401 Unauthorized
-        }
         const userFromToken = jwt.verify(authToken, process.env.JWT_SECRET as string) as JWTPayload;
-
-
         if (userFromToken.id === user.id) {
             await prisma.user.delete({ where: { id: parseInt(params.id) } });
             return NextResponse.json({ message: 'User deleted successfully' }, { status: 200 });
