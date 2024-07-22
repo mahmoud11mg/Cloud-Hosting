@@ -3,8 +3,7 @@ import prisma from '@/utils/db';
 import { RegisterUserDto } from '@/utils/dtos';
 import { RegisterSchema } from '@/utils/ValidationSchema';
 import bcrypt from 'bcryptjs';
-import {generateJWT} from '@/utils/generateToken';
-import { JWTPayload } from '@/utils/types';
+import { setCookie } from '@/utils/generateToken';
 
 /** 
  * @method Post
@@ -41,16 +40,21 @@ export async function POST(request: NextRequest) {
             }
         });
 
-        const jwtPayload:JWTPayload = {
+        const cookie = setCookie({
             id: newUser.id,
             isAdmin: newUser.isAdmin,
             username: newUser.username
-        }
-        const token = generateJWT(jwtPayload);
-        return NextResponse.json({...newUser, token }, { status: 201 })
+        });
 
-           }
-        catch (error) {
+        return NextResponse.json({ ...newUser, message: "Registered & Authenticated" }, {
+            status: 201,
+            headers: {
+                'Set-Cookie': cookie
+            }
+        });
+
+    }
+    catch (error) {
         return NextResponse.json({ message: "Internal Server Error " }, { status: 500 })
     }
 }

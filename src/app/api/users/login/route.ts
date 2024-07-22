@@ -3,8 +3,9 @@ import { LoginUserDto } from '@/utils/dtos';
 import { LoginSchema } from '@/utils/ValidationSchema';
 import prisma from '@/utils/db';
 import bcrypt from 'bcryptjs';
-import {generateJWT} from '@/utils/generateToken';
-import { JWTPayload } from '@/utils/types';
+import { setCookie } from '@/utils/generateToken';
+
+
 
 
 /** 
@@ -29,14 +30,17 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ message: "Invalid Email Or Password " }, { status: 400 });
         }
 
-        const jwtPayload:JWTPayload = {
+              
+        const cookie = setCookie({
             id: user.id,
             isAdmin: user.isAdmin,
             username: user.username
-        }
-        const token = generateJWT(jwtPayload);
+        });
 
-        return NextResponse.json({ message: "Autheticated", token }, { status: 200 });
+        return NextResponse.json({ message: "Autheticated" }, {
+            status: 200,
+            headers: { 'Set-Cookie': cookie },
+        });
 
     }
 
