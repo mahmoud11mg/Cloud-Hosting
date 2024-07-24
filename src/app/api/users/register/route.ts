@@ -6,23 +6,26 @@ import bcrypt from 'bcryptjs';
 import { setCookie } from '@/utils/generateToken';
 
 /** 
- * @method Post
+ * @method POST
  * @route  http://localhost:3000/api/users/register Or ~/api/users/register
- * @dexc   Created New User [(Register) ( Sign Up) (إنشاء حساب )]
+ * @desc   Create New User [(Register) (Sign Up) (إنشاء حساب)]
  * @access Public
  */
-
 export async function POST(request: NextRequest) {
     try {
-        const body = (await request.json() as RegisterUserDto);
+        const body = (await request.json()) as RegisterUserDto;
         const validation = RegisterSchema.safeParse(body);
+
         if (!validation.success) {
             return NextResponse.json({ message: validation.error.errors }, { status: 400 });
         }
+
         const user = await prisma.user.findUnique({ where: { email: body.email } });
+
         if (user) {
             return NextResponse.json({ message: "Email already exists" }, { status: 400 });
         }
+
         const salt = await bcrypt.genSalt(10);
         const hashPassword = await bcrypt.hash(body.password, salt);
 
@@ -52,9 +55,8 @@ export async function POST(request: NextRequest) {
                 'Set-Cookie': cookie
             }
         });
-
-    }
-    catch (error) {
-        return NextResponse.json({ message: "Internal Server Error " }, { status: 500 })
+    } catch (error) {
+        console.error(error);
+        return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });
     }
 }

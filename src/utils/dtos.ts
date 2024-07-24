@@ -24,4 +24,8 @@ export interface UpdateUserDto {
     password?: string;
     
 }
+export interface CommentDto {
+    text: string;
+    articleId: number;
+}
 

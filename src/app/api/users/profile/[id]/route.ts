@@ -97,9 +97,18 @@ export async function PUT(request: NextRequest, { params }: Props) {
 
         const body = await request.json() as UpdateUserDto;
         if (body.password) {
-           const salt = await bcrypt.genSalt(10);
-           body.password = await bcrypt.hash(body.password , salt);
+
+            if (body.password.length < 8) {
+                return NextResponse.json(
+                    { message: 'Password Must Be At Least 8 Characters' },
+                    { status: 400 });
+            }
+            const salt = await bcrypt.genSalt(10);
+            body.password = await bcrypt.hash(body.password, salt);
+
         }
+
+
         const UpdateUser = await prisma.user.update({
             where: { id: parseInt(params.id) },
             data: {
@@ -109,8 +118,8 @@ export async function PUT(request: NextRequest, { params }: Props) {
             }
 
         });
-        const {password, ...other} = UpdateUser;
-        return NextResponse.json({...other}, { status: 200 })
+        const { password, ...other } = UpdateUser;
+        return NextResponse.json({ ...other }, { status: 200 })
     }
     catch (error) {
         return NextResponse.json({ message: 'User Not Found' }, { status: 404 });

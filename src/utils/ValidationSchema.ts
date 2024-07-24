@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { articles } from "./data";
 
 // Create Acticle Schema
 export const CreateArticleSchema = z.object({
@@ -25,7 +26,7 @@ export const RegisterSchema = z.object({
     username: z.string().min(3, { message: "User Name Must Be More Than 3 Characters" })
         .max(100, { message: "User Name less Than Or Equal to 100 Characters" }),
 
-    email: z.string().min(20, { message: "Email Must Be More Than 20 Characters" })
+    email: z.string().min(10, { message: "Email Must Be More Than 20 Characters" })
         .max(50, { message: " Email less Than Or Equal to 100 Characters" }),
 
     password: z.string().min(8, { message: "Password Must Be More Than 8 Characters" }),
@@ -33,7 +34,13 @@ export const RegisterSchema = z.object({
 
 // Login Schema
 export const LoginSchema = z.object({
-    email: z.string().min(20, { message: "Email Must Be More Than 20 Characters" })
+    email: z.string().min(10, { message: "Email Must Be More Than 20 Characters" })
         .max(50, { message: " Email less Than Or Equal to 100 Characters" }),
     password: z.string().min(8, { message: "Password Must Be More Than 8 Characters" }),
+})
+// Create Comment Schema
+export const CreateCommentSchema = z.object({
+    text: z.string().min(2, { message: "Email Must Be More Than 20 Characters" })
+        .max(500, { message: " Email less Than Or Equal to 100 Characters" }),
+    articlesId: z.number(),
 })
