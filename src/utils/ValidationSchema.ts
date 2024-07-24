@@ -40,7 +40,6 @@ export const LoginSchema = z.object({
 })
 // Create Comment Schema
 export const CreateCommentSchema = z.object({
-    text: z.string().min(2, { message: "Email Must Be More Than 20 Characters" })
-        .max(500, { message: " Email less Than Or Equal to 100 Characters" }),
-    articlesId: z.number(),
-})
+    text: z.string().min(1, { message: "Text is required" }),
+    articleId: z.number().min(1, { message: "Article ID is required and must be a number" }),
+});
