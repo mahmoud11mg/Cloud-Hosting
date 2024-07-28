@@ -13,13 +13,13 @@ const Loading = () => {
           <div key={item} className="p-5 rounded-lg my-1 w-full md:w-2/5 lg:w-1/4 bg-gray-200">
           <h3 className="h-6 bg-gray-300"></h3>
           <p className="my-2 p-1 h-10 bg-gray-300 " ></p>
-          <div className="w-full  p-1 bg-gray-900 block rounded-lg h-8 " > </div>
+       
       </div>
 
        ))}
 
       </div>
-              
+      <div className="w-[40%]  my-5   m-auto bg-gray-400 h-12 rounded" > </div>
         
 
     </section>

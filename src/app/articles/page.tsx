@@ -20,7 +20,7 @@ const ArticlesPage = async () => {
     <section className="container m-auto px-5">
       <SearchArticleInput/>
       <div className=" flex items-center justify-center flex-wrap gap-7">
-        {article.slice(0,9).map(item => (
+        {article.slice(0,6).map(item => (
           <ArticleItme article={item} key={item.id} />
         ))}
       </div>

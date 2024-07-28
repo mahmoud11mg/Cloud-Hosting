@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { UpdateArticleDto } from '@/utils/dtos';
 import prisma from '@/utils/db';
+import { verifyToken } from '@/utils/verifyToken';
 
 
 interface Props {
@@ -32,10 +33,14 @@ export async function GET(request: NextRequest, { params }: Props) {
  * @method PUT
  * @route  http://localhost:3000/api/articles/:id Or ~/api/articles/:id
  * @dexc   Update Articles
- * @access Public
+ * @access private (Only Admin con Update articles)
  */
 export async function PUT(request: NextRequest, { params }: Props) {
     try {
+        const user = verifyToken(request);
+        if (user === null ||user.isAdmin === false) {
+            return NextResponse.json({ message: "Only Admins, Access denied" }, { status: 403 });
+        }
         const article = await prisma.article.findUnique({ where: { id: parseInt(params.id) } });
         if (!article) {
             return NextResponse.json({ message: 'Article not found' }, { status: 404 });
@@ -61,11 +66,15 @@ export async function PUT(request: NextRequest, { params }: Props) {
  * @method DELETE
  * @route  http://localhost:3000/api/articles/:id Or ~/api/articles/:id
  * @dexc   DELETE Articles
- * @access Public
+ * @access private (Only Admin con DELETE articles
  */
 
 export async function DELETE(request: NextRequest, { params }: Props) {
     try {
+        const user = verifyToken(request);
+        if (user === null ||user.isAdmin === false) {
+            return NextResponse.json({ message: "Only Admins, Access denied" }, { status: 403 });
+        }
         const article = await prisma.article.findUnique({ where: { id: parseInt(params.id) } });
         if (!article) {
             return NextResponse.json({ message: 'Article not found' }, { status: 404 });

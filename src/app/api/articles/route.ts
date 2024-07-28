@@ -3,16 +3,25 @@ import { CreateArticleSchema } from '@/utils/ValidationSchema';
 import { CreateArticleDto } from '@/utils/dtos';
 import { Article } from '@prisma/client';
 import prisma from '@/utils/db';
+import { ARTICLE_PER_PAGE } from '@/utils/constants';
+import { verifyToken } from '@/utils/verifyToken';
+
 
 /** 
  * @method GET
  * @route  http://localhost:3000/api/articles Or ~/api/articles
- * @desc   GET All Articles
+ * @desc   GET Articles By Page Number
  * @access Public
  */
 export async function GET(request: NextRequest) {
     try {
-        const articles = await prisma.article.findMany();
+        const PageNumber = request.nextUrl.searchParams.get("PageNumber") || "1" ;
+      
+         const articles = await prisma.article.findMany({
+            skip: ARTICLE_PER_PAGE * (parseInt(PageNumber) - 1),
+            take: ARTICLE_PER_PAGE,
+            
+         });
         return NextResponse.json(articles, { status: 200 });
     } catch (error) {
         console.error(error);
@@ -24,10 +33,14 @@ export async function GET(request: NextRequest) {
  * @method POST
  * @route  http://localhost:3000/api/articles Or ~/api/articles
  * @desc   Create New Articles
- * @access Public
+ * @access private (Only Admin con Creates articles)
  */
 export async function POST(request: NextRequest) {
     try {
+        const user = verifyToken(request);
+        if (user === null ||user.isAdmin === false) {
+            return NextResponse.json({ message: "Only Admins, Access denied" }, { status: 403 });
+        }
         const body = (await request.json()) as CreateArticleDto;
         const validation = CreateArticleSchema.safeParse(body);
         

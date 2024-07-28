@@ -9,7 +9,7 @@ import { setCookie } from '@/utils/generateToken';
  * @method GET
  * @route  http://localhost:3000/api/users/logout Or ~/api/users/logout
  * @dexc   Logout User [ ( Sign Out) (  الخروج من الحساب  )]
- * @access Public
+ * @access public
  */
 export async function GET(request: NextRequest) {
     try {

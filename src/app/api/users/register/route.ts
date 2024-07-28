@@ -9,7 +9,7 @@ import { setCookie } from '@/utils/generateToken';
  * @method POST
  * @route  http://localhost:3000/api/users/register Or ~/api/users/register
  * @desc   Create New User [(Register) (Sign Up) (إنشاء حساب)]
- * @access Public
+ * @access public
  */
 export async function POST(request: NextRequest) {
     try {

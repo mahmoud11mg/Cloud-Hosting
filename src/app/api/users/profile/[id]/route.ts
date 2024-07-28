@@ -11,7 +11,7 @@ interface Props {
 * @method DELETE
 * @route  http://localhost:3000/api/users/profile/:id Or ~/api/users/profile/:id
 * @dexc   Created New User [(Register) ( Sign Up) (إنشاء حساب )]
-* @access Private
+* @access private
 */
 export async function DELETE(request: NextRequest, { params }: Props) {
     try {
@@ -40,7 +40,7 @@ export async function DELETE(request: NextRequest, { params }: Props) {
 * @method GET
 * @route  http://localhost:3000/api/users/profile/:id Or ~/api/users/profile/:id
 * @dexc   GET Profile By ID
-* @access Private (Only User Himeself Can Get His Account/profile)
+* @access private (Only User Himeself Can Get His Account/profile)
 */
 export async function GET(request: NextRequest, { params }: Props) {
     try {
@@ -80,7 +80,7 @@ export async function GET(request: NextRequest, { params }: Props) {
 * @method PUT
 * @route  http://localhost:3000/api/users/profile/:id Or ~/api/users/profile/:id
 * @dexc   Update User Profile [(Edit Profile) (تعديل الملف الشخصي )]
-* @access Private (Only User Himeself Can Update His Account/profile)
+* @access private (Only User Himeself Can Update His Account/profile)
 */
 export async function PUT(request: NextRequest, { params }: Props) {
     try {

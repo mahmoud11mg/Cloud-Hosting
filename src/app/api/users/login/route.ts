@@ -9,7 +9,7 @@ import { setCookie } from '@/utils/generateToken';
  * @method POST
  * @route  http://localhost:3000/api/users/login Or ~/api/users/login
  * @desc   Login User [(Login) (Sign In) (تسجيل الدخول)]
- * @access Public
+ * @access public
  */
 export async function POST(request: NextRequest) {
     try {
