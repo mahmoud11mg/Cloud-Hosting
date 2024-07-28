@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { optional, z } from "zod";
 import { articles } from "./data";
 
 // Create Acticle Schema
@@ -43,3 +43,15 @@ export const CreateCommentSchema = z.object({
     text: z.string().min(1, { message: "Text is required" }),
     articleId: z.number().min(1, { message: "Article ID is required and must be a number" }),
 });
+
+// Update User Profil Schema
+export const UpdateUserSchema = z.object({
+
+    username: z.string().min(3, { message: "User Name Must Be More Than 3 Characters" })
+        .max(100, { message: "User Name less Than Or Equal to 100 Characters" }).optional(),
+
+    email: z.string().min(10, { message: "Email Must Be More Than 20 Characters" })
+        .max(50, { message: " Email less Than Or Equal to 100 Characters" }).optional(),
+
+    password: z.string().min(8, { message: "Password Must Be More Than 8 Characters" }).optional(),
+})

@@ -3,6 +3,7 @@ import prisma from '@/utils/db';
 import { verifyToken } from '@/utils/verifyToken';
 import { UpdateUserDto } from '@/utils/dtos';
 import bcrypt from 'bcryptjs';
+import { UpdateUserSchema } from '@/utils/ValidationSchema';
 interface Props {
     params: { id: string }
 }
@@ -15,7 +16,12 @@ interface Props {
 */
 export async function DELETE(request: NextRequest, { params }: Props) {
     try {
-        const user = await prisma.user.findUnique({ where: { id: parseInt(params.id) } });
+        const user = await prisma.user.findUnique({ 
+            where: { id: parseInt(params.id) } ,
+            include:{
+                comments:true
+            }
+        });
 
         if (!user) {
             return NextResponse.json({ message: 'User Not Found' }, { status: 404 });
@@ -23,7 +29,13 @@ export async function DELETE(request: NextRequest, { params }: Props) {
 
         const userFromToken = verifyToken(request);
         if (userFromToken !== null && userFromToken.id === user.id) {
+            //Delete User 
             await prisma.user.delete({ where: { id: parseInt(params.id) } });
+        //Delete Comments thet belongs to the User
+        const commentsId : number[] = user?.comments.map(comment => comment.id);
+        await prisma.comment.deleteMany({ where: { id:{ in:commentsId } } });
+
+
             return NextResponse.json({ message: 'Your Profile ( account ) has been deleted ' }, { status: 200 });
         }
 
@@ -34,8 +46,8 @@ export async function DELETE(request: NextRequest, { params }: Props) {
     }
 
 }
-// GET 
 
+// GET 
 /** 
 * @method GET
 * @route  http://localhost:3000/api/users/profile/:id Or ~/api/users/profile/:id
@@ -96,13 +108,13 @@ export async function PUT(request: NextRequest, { params }: Props) {
         }
 
         const body = await request.json() as UpdateUserDto;
+        const validation =UpdateUserSchema.safeParse(body);
+        if(!validation.success){
+           
+            return NextResponse.json({message:validation.error.errors[0].message} , { status: 400 });
+            
+        }
         if (body.password) {
-
-            if (body.password.length < 8) {
-                return NextResponse.json(
-                    { message: 'Password Must Be At Least 8 Characters' },
-                    { status: 400 });
-            }
             const salt = await bcrypt.genSalt(10);
             body.password = await bcrypt.hash(body.password, salt);
 

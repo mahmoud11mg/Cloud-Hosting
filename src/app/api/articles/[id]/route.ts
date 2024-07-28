@@ -92,13 +92,21 @@ export async function DELETE(request: NextRequest, { params }: Props) {
         if (user === null ||user.isAdmin === false) {
             return NextResponse.json({ message: "Only Admins, Access denied" }, { status: 403 });
         }
-        const article = await prisma.article.findUnique({ where: { id: parseInt(params.id) } });
+        const article = await prisma.article.findUnique({
+             where: { id: parseInt(params.id) },
+             include:{
+                comments:true,
+             }
+
+             });
         if (!article) {
             return NextResponse.json({ message: 'Article not found' }, { status: 404 });
         }
-        const DELETEArticle = await prisma.article.delete({
-            where: { id: parseInt(params.id) }
-        });
+        // Deleting The Article
+        const DELETEArticle = await prisma.article.delete({   where: { id: parseInt(params.id) } });
+        // Deleting The Comment thet belongs to the Article
+        const commentsId : number[] = article?.comments.map(comment => comment.id);
+        await prisma.comment.deleteMany({ where: { id:{ in:commentsId } } });
 
         return NextResponse.json({ message: 'Article  DELETE' }, { status: 200 });
     }
