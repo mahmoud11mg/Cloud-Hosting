@@ -4,7 +4,7 @@ const acticlesSkeleton=[1, 2, 3, 4, 5, 6] ;
 
 const Loading = () => {
   return (
-    <section className='h-96 px-5 container m-auto animate-pulse '>
+    <section className='h-96 px-5 container m-auto animate-pulse  p-3 rounded-lg my-1  '>
 
       <div className='my-5 w-full md:w-2/3 m-auto bg-gray-300 h-12 rounded '></div>
 

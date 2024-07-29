@@ -1,25 +1,38 @@
+import Link from "next/link";
 
-const pages =[1,2,3,4]
-
-const Pagination = () => {
-  return (
-    <div className="flex items-center justify-center mt-2 mb-10">
-         <div className="border border-gray-700 text-gray-700 py-1 px-3 font-bold text-xl cursor-pointer hover:bg-gray-200 transition ">
-           Prev 
-                 </div>
-                 
-        { pages.map(page => (
-            <div className="border border-gray-700 text-gray-700 py-1 px-3 font-bold text-xl cursor-pointer hover:bg-gray-200 transition "
-             key={page} >
-                 {page}
-                 </div>
-
-        )) }
-         <div className="border border-gray-700 text-gray-700 py-1 px-3 font-bold text-xl cursor-pointer hover:bg-gray-200 transition ">
-            Next 
-                 </div>
-        </div>
-  )
+interface PaginationProps {
+    pages: number;
+    pageNumber: number;
+    route: string;
 }
 
-export default Pagination
+const Pagination = ({ pageNumber, pages, route }: PaginationProps) => {
+    let pagesArray: number[] = [];
+
+    for (let i = 1; i <= pages; i++) pagesArray.push(i);
+    const prev = pageNumber - 1;
+    const next = pageNumber + 1;
+
+    return (
+        <div className="flex items-center justify-center mt-2 mb-10">
+            {pageNumber !== 1 && (
+                <Link href={`${route}?pageNumber=${prev}`} className="border border-gray-700 text-gray-700 py-1 px-3 font-bold text-xl cursor-pointer hover:bg-gray-200 transition">
+                    Prev
+                </Link>
+            )}
+            {pagesArray.map(page => (
+                <Link href={`${route}?pageNumber=${page}`} className={`${pageNumber == page ? "bg-gray-500 border-gray-400 ": ""}border border-gray-700 text-gray-700 py-1 px-3 font-bold text-xl cursor-pointer hover:bg-gray-400 transition`}
+                    key={page}>
+                    {page}
+                </Link>
+            ))}
+            {pageNumber !== pages && (
+                <Link href={`${route}?pageNumber=${next}`} className="border border-gray-700 text-gray-700 py-1 px-3 font-bold text-xl cursor-pointer hover:bg-gray-200 transition">
+                    Next
+                </Link>
+            )}
+        </div>
+    );
+}
+
+export default Pagination;
