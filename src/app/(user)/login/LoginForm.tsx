@@ -2,21 +2,38 @@
 import React, { useState } from 'react'
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
+import axios from 'axios';
+import { DOMAIN } from '@/utils/constants';
+import ButtonSpinner from '@/components/ButtonSpinner';
+
+
 
 const LoginForm = () => {
     const router = useRouter();
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const formSubmitHandler = (e: React.FormEvent) => {
+    const [loading, setLoading] = useState(false)
+
+    const formSubmitHandler = async (e: React.FormEvent) => {
         e.preventDefault()
         if (email === "") return toast.error("Please Enter Email ")
         if (password === "") return toast.error("Please Enter Password")
-        //Submit the form data to the server
-        console.log(`Form submitted with email: ${email} and password: ${password}`)
-        // Reset form inputs
-        setEmail('')
-        setPassword('')
-        router.replace('/') // no back to login
+            try{
+                setLoading(true);
+                await axios.post(`${DOMAIN}/api/users/login`,{ email, password })
+                router.replace('/') // no back to login
+                setLoading(false);
+                toast.success('LogIn  Successfully');
+                router.refresh();
+
+        }catch(error:any){
+            toast.error(error?.response?.data.message)
+            console.error(error)
+            setLoading(false);
+
+        }
+
+         
         // router.push('/') // back to login
 
     }
@@ -37,7 +54,9 @@ const LoginForm = () => {
                     onChange={(e) => setPassword(e.target.value)}
                 />
 
-                <button type='submit' className="bg-sky-600 hover:bg-sky-700 text-white rounded-xl p-3 mt-3  w-full "> Login</button>
+                <button disabled={loading} type='submit' className="bg-sky-600 hover:bg-sky-700 text-white rounded-xl p-3 mt-3  w-full ">
+                     {loading ? <ButtonSpinner/> : "LogIn"}
+                     </button>
 
 
             </form>
