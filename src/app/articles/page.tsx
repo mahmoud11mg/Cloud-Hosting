@@ -12,6 +12,8 @@ interface ArticlePageProps {
 
 const ArticlesPage = async ({ searchParams }: ArticlePageProps) => {
     const { pageNumber } = searchParams;
+  
+
     const articles: Article[] = await getArticles(pageNumber);
     const count: number = await getArticlesCount();
 

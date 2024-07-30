@@ -8,7 +8,7 @@ import ButtonSpinner from '@/components/ButtonSpinner';
 
 const RegisterForm = () => {
     const router = useRouter();
-    const [userName, setUserName] = useState('');
+    const [username, setUserName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
@@ -17,11 +17,11 @@ const RegisterForm = () => {
         e.preventDefault();
         if (email === "") return toast.error("Please enter email");
         if (password === "") return toast.error("Please enter password");
-        if (userName === "") return toast.error("Please enter username");
+        if (username === "") return toast.error("Please enter username");
         
         try {
             setLoading(true);
-            await axios.post(`${DOMAIN}/api/users/register`, { email, password, userName });
+            await axios.post(`${DOMAIN}/api/users/register`, { email, password, username });
             router.replace('/'); // No back to login
             setLoading(false);
             toast.success('Registration successful');
@@ -41,7 +41,7 @@ const RegisterForm = () => {
                     className="block w-full px-3 py-2 text-gray-700 placeholder-gray-500 focus:outline-none mb-3 focus:ring-sky-600 ring-1 rounded-lg"
                     id="userName"
                     placeholder="User Name"
-                    value={userName}
+                    value={username}
                     onChange={(e) => setUserName(e.target.value)}
                 />
                 <input

@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { DOMAIN } from '@/utils/constants';
-
+import {IoMdAddCircleOutline,} from 'react-icons/io';
 
 interface AppComentFormProps {
     articleId:number;
@@ -41,8 +41,12 @@ const AddCommentForm = ({ articleId } : AppComentFormProps) => {
                     value={text}
                     onChange={(e) => setText(e.target.value)}
                     />
-                   <button type='submit' className="bg-sky-600 text-2xl hover:bg-sky-700 text-white rounded-xl p-3 mt-3 w-[190px]  "> 
-                     Comment </button>
+                  <button type='submit' 
+                  className= " mt-4 bg-sky-600 text-2xl hover:bg-sky-700 text-white rounded-xl p-3 w-[190px] flex items-center justify-center space-x-2">
+                    <IoMdAddCircleOutline className='text-center text-3xl' />
+                    <span>Comment</span>
+                                    </button>
+
             </form>
         </div>
     )
