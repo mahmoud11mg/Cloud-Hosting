@@ -11,9 +11,10 @@ const Header = () => {
 
   const token = cookies().get("jwtToken")?.value || "";
   const paylod = verifyTokenForPage(token);
+
   return (
     <header className={styles.header} >
-      <Navbar />
+      <Navbar  isAdmin={paylod?.isAdmin|| false}/>
       <div className={styles.right}>
         {paylod ? (
           <>

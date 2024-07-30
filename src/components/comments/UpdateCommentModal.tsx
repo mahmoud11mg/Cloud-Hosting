@@ -32,8 +32,8 @@ const UpdateCommentModal = ({ setOpen, text, commentId }: UpdateCommentModalProp
     };
 
     return (
-        <div className='fixed top-0 left-0 bottom-10 right-0 z-10 bg-black bg-opacity-40 flex items-center justify-center'>
-            <div className='w-2/4 bg-white rounded-lg p-3'>
+        <div className='fixed top-0 left-0 bottom-10 right-0 z-10 bg-black bg-opacity-40 flex items-center justify-center h-[100%]'>
+            <div className='w-11/12 lg:w-2/4 bg-white rounded-lg p-3'>
                 <div className='flex items-start justify-end mb-5'>
                     <IoMdCloseCircleOutline onClick={() => setOpen(false)} className='text-3xl text-red-500 cursor-pointer' />
                 </div>

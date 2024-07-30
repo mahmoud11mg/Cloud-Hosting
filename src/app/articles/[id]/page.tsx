@@ -14,6 +14,7 @@ const SingleArticlePage = async ({ params }: SingleArticlePageProps) => {
   const token = cookies().get("jwtToken")?.value || "";
   const payload = verifyTokenForPage(token);
 
+
   const article: SingleArticle = await getSingleArticle(params.id);
 
   return (
@@ -37,7 +38,7 @@ const SingleArticlePage = async ({ params }: SingleArticlePageProps) => {
       </div>
       <h4 className="text-xl text-gray-800 px-1 font-semibold mb-2 mt-7">Comments</h4>
       {article.comments.map(comment => (
-        <CommentItem key={comment.id} comment={comment} userId={payload?.id} />
+        <CommentItem key={comment.id} comment={comment} userId={payload?.id} isAdmin />
       ))}
     </section>
   );
