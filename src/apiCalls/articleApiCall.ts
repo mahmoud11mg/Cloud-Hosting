@@ -3,10 +3,10 @@ import { DOMAIN } from '@/utils/constants';
 import { SingleArticle } from "@/utils/types";
 
 
-// Get Articles based on PageNumber
-export async function getArticles(PageNumber: string | undefined): Promise<Article[]> {
+// Get Articles based on pageNumber
+export async function getArticles(pageNumber: string | undefined): Promise<Article[]> {
    
-    const response = await fetch(`${DOMAIN}/api/articles?PageNumber=${PageNumber}`);
+    const response = await fetch(`${DOMAIN}/api/articles?pageNumber=${pageNumber}`);
     if (!response.ok) {
         throw new Error(`Failed To Fetch Articles`);
     }   
