@@ -6,7 +6,10 @@ import { SingleArticle } from "@/utils/types";
 // Get Articles based on pageNumber
 export async function getArticles(pageNumber: string | undefined): Promise<Article[]> {
    
-    const response = await fetch(`${DOMAIN}/api/articles?pageNumber=${pageNumber}`);
+    const response = await fetch(
+        `${DOMAIN}/api/articles?pageNumber=${pageNumber}`,
+        {cache:'no-store'}
+    );
     if (!response.ok) {
         throw new Error(`Failed To Fetch Articles`);
     }   
@@ -16,7 +19,7 @@ export async function getArticles(pageNumber: string | undefined): Promise<Artic
 
 // Get Articles Count
 export async function getArticlesCount(): Promise<number> {
-    const response = await fetch(`${DOMAIN}/api/articles/count`);
+    const response = await fetch(`${DOMAIN}/api/articles/count`,  {cache:'no-store'}  );
     if (!response.ok) {
         throw new Error(`Failed To Get Article Count`);
     }

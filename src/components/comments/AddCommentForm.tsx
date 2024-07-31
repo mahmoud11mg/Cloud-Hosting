@@ -17,15 +17,16 @@ const AddCommentForm = ({ articleId } : AppComentFormProps) => {
     const formSubmitHandler = async (e:React.FormEvent) => {
         e.preventDefault()
 
-        if(text === "") return toast.error("Please Add Comment To Articles")
+        if(text === "") return toast.error("Please Add Comment To Articles", { autoClose: 2000 })
             try{
                 await axios.post(`${DOMAIN}/api/comments`,{ text, articleId })
                 router.refresh()
+                toast.success(' Comment Add To Articles Successfully', { autoClose: 1000 });
                 setText("")
                 
 
         }catch(error:any) {
-            toast.error(error?.response?.data.message)
+            toast.error(error?.response?.data.message, { autoClose: 2000 });
             console.error(error)
             
         };

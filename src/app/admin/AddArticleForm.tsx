@@ -7,25 +7,25 @@ import { toast } from 'react-toastify';
 
 
 
-const AdminArticlesForm = ()  => {
+const AddArticleForm = ()  => {
     const router = useRouter();
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
 
     const formSubmitHandler = async (e:React.FormEvent) => {
         e.preventDefault()
-        if(title ===""  ) return toast.error("Titile Is Required ")
-        if(description ==="" ) return toast.error("Description Is Required")
+        if(title ===""  ) return toast.error("Titile Is Required ", { autoClose: 2000 })
+        if(description ==="" ) return toast.error("Description Is Required", { autoClose: 2000 })
             try{
                 await axios .post(`${DOMAIN}/api/articles`,{description,title});
                 setTitle("");
                 setDescription("");
-                toast.success('New Article Added Successfully')
+                toast.success('New Article Added Successfully', { autoClose: 1000 })
                 router.refresh();
 
        
          }catch(error:any){
-            toast.error(error?.response?.data.message)
+            toast.error(error?.response?.data.message, { autoClose: 2000 })
             console.error(error)
         };
     }
@@ -58,4 +58,4 @@ const AdminArticlesForm = ()  => {
     )
 }
 
-export default AdminArticlesForm
+export default AddArticleForm

@@ -18,15 +18,15 @@ const UpdateCommentModal = ({ setOpen, text, commentId }: UpdateCommentModalProp
 
     const formSubmitHandler = async (e: FormEvent) => {
         e.preventDefault();
-        if (updateText === "") return toast.info("Please Enter Comment Text");
+        if (updateText === "") return toast.info("Please Enter Comment Text", { autoClose: 2000 });
         try {
             await axios.put(`${DOMAIN}/api/comments/${commentId}`, { text: updateText }); // Corrected URL
             router.refresh();
             setUpdateText("");
             setOpen(false);
-            toast.success('Comment Updated Successfully');
+            toast.success('Comment Updated Successfully', { autoClose: 1000 });
         } catch (error: any) {
-            toast.error(error?.response?.data?.message || 'An error occurred'); // Fixed error response handling
+            toast.error(error?.response?.data?.message || 'An error occurred', { autoClose: 2000 }); // Fixed error response handling
             console.log(error);
         }
     };

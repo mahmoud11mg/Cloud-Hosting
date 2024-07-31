@@ -16,18 +16,18 @@ const LoginForm = () => {
 
     const formSubmitHandler = async (e: React.FormEvent) => {
         e.preventDefault()
-        if (email === "") return toast.error("Please Enter Email ")
-        if (password === "") return toast.error("Please Enter Password")
+        if (email === "") return toast.error("Please Enter Email ", { autoClose: 2000 })
+        if (password === "") return toast.error("Please Enter Password", { autoClose: 2000 })
             try{
                 setLoading(true);
                 await axios.post(`${DOMAIN}/api/users/login`,{ email, password })
                 router.replace('/') // no back to login
                 setLoading(false);
-                toast.success('LogIn  Successfully');
+                toast.success('LogIn  Successfully', { autoClose: 1000 })
                 router.refresh();
 
         }catch(error:any){
-            toast.error(error?.response?.data.message)
+            toast.error(error?.response?.data.message, { autoClose: 2000 })
             console.error(error)
             setLoading(false);
 

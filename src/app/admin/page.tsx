@@ -1,4 +1,4 @@
-import AdminArticlesForm from "./AdminArticlesForm"
+import AdminArticlesForm from "./AddArticleForm"
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { verifyTokenForPage } from "@/utils/verifyToken";

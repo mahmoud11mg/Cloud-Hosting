@@ -23,11 +23,11 @@ const CommentItem = ({ comment, userId }: CommentItemProps) => {
          if(confirm("Are you sure you want to delete")){
           await axios.delete(`${DOMAIN}/api/comments/${comment.id}`);
           router.refresh();
-          toast.success('Comment deleted successfully')
+          toast.success('Comment deleted successfully', { autoClose: 1000 });
          }
         
        } catch (error: any) {
-      toast.error(error?.response?.data.message)
+      toast.error(error?.response?.data.message, { autoClose: 2000 });
       console.error(error)
       console.log(error);
     }

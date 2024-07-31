@@ -15,19 +15,19 @@ const RegisterForm = () => {
 
     const formSubmitHandler = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (email === "") return toast.error("Please enter email");
-        if (password === "") return toast.error("Please enter password");
-        if (username === "") return toast.error("Please enter username");
+        if (email === "") return toast.error("Please enter email", { autoClose: 2000 })
+        if (password === "") return toast.error("Please enter password", { autoClose: 2000 })
+        if (username === "") return toast.error("Please enter username", { autoClose: 2000 })
         
         try {
             setLoading(true);
             await axios.post(`${DOMAIN}/api/users/register`, { email, password, username });
             router.replace('/'); // No back to login
             setLoading(false);
-            toast.success('Registration successful');
+            toast.success('Registration successful', { autoClose: 1000 })
             router.refresh();
         } catch (error: any) {
-            toast.error(error?.response?.data?.message || "Registration failed");
+            toast.error(error?.response?.data?.message || "Registration failed", { autoClose: 1000 })
             console.error(error);
             setLoading(false);
         }
