@@ -17,16 +17,6 @@ export async function getArticles(pageNumber: string | undefined): Promise<Artic
     return response.json();
 }
 
-// Get Articles Count
-export async function getArticlesCount(): Promise<number> {
-    const response = await fetch(`${DOMAIN}/api/articles/count`,  {cache:'no-store'}  );
-    if (!response.ok) {
-        throw new Error(`Failed To Get Article Count`);
-    }
-    const { count } = await response.json() as { count: number };
-    return count;
-}
-
 // Get Articles based on SarchText
 export async function getArticlesBasedOnSarch(searchText: string ): Promise<Article[]> {
     const response = await fetch(`${DOMAIN}/api/articles/search?searchText=${searchText}`);

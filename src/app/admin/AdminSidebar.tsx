@@ -2,6 +2,7 @@ import Link from "next/link"
 import { CgMenuGridR } from "react-icons/cg"
 import { FaRegComments } from "react-icons/fa"
 import { MdOutlineArticle } from "react-icons/md"
+import { GrUserAdmin } from "react-icons/gr";
 
 const AdminSidebar = () => {
     return (
@@ -24,6 +25,12 @@ const AdminSidebar = () => {
                     href={'/admin/comments-table'}>
                     <FaRegComments className=" me-1" />
                     <span className="hidden lg:block">Comments</span>
+                </Link>
+
+                <Link className="flex items-center text-xl mb-5  active:border-yellow-200 focus:border-yellow-200  active:text-yellow-200 focus:text-yellow-200 lg:border-b border-gray-300 hover:border-yellow-200 hover:text-yellow-200 transition"
+                    href={'/admin/user-admin'}>
+                    <GrUserAdmin className=" me-1" />
+                    <span className="hidden lg:block">Add Admin</span>
                 </Link>
             </ul>
 

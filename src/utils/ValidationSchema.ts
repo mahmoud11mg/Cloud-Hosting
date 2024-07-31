@@ -1,5 +1,4 @@
-import { optional, z } from "zod";
-import { articles } from "./data";
+import { z } from "zod";
 
 // Create Acticle Schema
 export const CreateArticleSchema = z.object({
