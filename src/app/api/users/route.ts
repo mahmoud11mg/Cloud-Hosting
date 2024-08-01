@@ -38,50 +38,47 @@ export async function GET(request: NextRequest) {
  * @desc   Update user information
  * @access Admin
  */
-export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(request: NextRequest, { params }: Props) {
     try {
         const userId = parseInt(params.id, 10);
         console.log("Request Params:", params);
 
         // Check if the user exists
-        const user = await prisma.user.findUnique({ where: { id: userId } });
-        if (!user) {
-            return NextResponse.json({ message: 'User Not Found' }, { status: 404 });
+        const user = verifyToken(request);
+        if (user === null ||user.isAdmin === false) {
+            return NextResponse.json({ message: "Only Admins, Access denied" }, { status: 403 });
         }
+        
 
         // Verify the token and ensure the user is authorized
         const userFromToken = verifyToken(request);
-        if (userFromToken === null) {
+        if (userFromToken === null || !userFromToken.isAdmin) {
             return NextResponse.json({ message: 'Access denied' }, { status: 403 });
         }
 
-        // Allow the specific email to change admin status
-        if (userFromToken.email === 'Mahmoudewewas11maged@g.com') {
-            // Parse and validate the request body
-            const body = await request.json() as UpdateUserAdminDto;
-            console.log("Request Body:", body);
+        // Parse and validate the request body
+        const body = await request.json() as UpdateUserAdminDto;
+        console.log("Request Body:", body);
 
-            const validation = UpdateUserAdminSchema.safeParse(body);
-            if (!validation.success) {
-                return NextResponse.json({ message: validation.error.errors[0].message }, { status: 400 });
+        const validation = UpdateUserAdminSchema.safeParse(body);
+        if (!validation.success) {
+            return NextResponse.json({ message: validation.error.errors[0].message }, { status: 400 });
+        }
+
+        // Update the user in the database
+        const updatedUser = await prisma.user.update({
+            where: { id: userId },
+            data: {
+                username: body.username,
+                email: body.email,
+                isAdmin: body.isAdmin,
             }
+        });
 
-            // Update the user in the database
-            const updatedUser = await prisma.user.update({
-                where: { id: userId },
-                data: {
-                    username: body.username,
-                    email: body.email,
-                    isAdmin: body.isAdmin, // Allow changes to isAdmin
-                }
-            });
+        // Exclude sensitive information such as password from the response
+        const { password, ...userWithoutPassword } = updatedUser;
+        return NextResponse.json(userWithoutPassword, { status: 200 });
 
-            // Exclude sensitive information such as password from the response
-            const { password, ...userWithoutPassword } = updatedUser;
-            return NextResponse.json(userWithoutPassword, { status: 200 });
-        } else {
-            return NextResponse.json({ message: 'Access denied' }, { status: 403 });
-        }
     } catch (error: any) {
         console.error("Error:", error.message);
         return NextResponse.json({ message: 'Failed to update user', error: error.message }, { status: 500 });

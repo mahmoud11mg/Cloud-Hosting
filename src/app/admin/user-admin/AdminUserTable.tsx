@@ -6,7 +6,7 @@ import prisma from "@/utils/db";
 import { User } from "@/utils/types"; // Update import path if needed
 import AdminUsersTableClient from "./AdminUsersTableClient";
 import { NextRequest } from "next/server";
-import { ToastContainer } from "react-toastify";
+
 
 
 const AdminUsersTable = async () => {
@@ -20,14 +20,14 @@ const AdminUsersTable = async () => {
     const count: number = await prisma.user.count();
  async function PATCH(request: NextRequest, { params }: { params: { id: string } }) {
         try {
-            console.log("Request Params:", params);
+
              const body = await request.json();
-            console.log("Request Body:", body);
+          
     
             // Other server logic...
     
         } catch (error: any) {
-            console.error("Error:", error.message);
+     
             // Handle error...
         }
     }
