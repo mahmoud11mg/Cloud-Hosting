@@ -47,7 +47,7 @@ export async function POST(request: NextRequest) {
         const cookie = setCookie({
             id: newUser.id,
             isAdmin: newUser.isAdmin,
-            username:newUser .usernameو
+            username:newUser .username,
             email:newUser.email
 
 
