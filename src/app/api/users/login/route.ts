@@ -35,7 +35,8 @@ export async function POST(request: NextRequest) {
         const cookie = setCookie({
             id: user.id,
             isAdmin: user.isAdmin,
-            username: user.username
+            username: user.username,
+            email: user.email
         });
 
         return NextResponse.json({ message: "Authenticated" }, {

@@ -11,12 +11,12 @@ const LogOutButton = () => {
     const logOutHandler = async () => {
         try {
             await axios.get(`${DOMAIN}/api/users/logout`)
-            toast.success('Logged Out Successfully')
+            toast.success('Logged Out Successfully',{ autoClose: 1000 });
             router.push('/')
             router.refresh();
 
         } catch (error) {
-            toast.error('Something Went Wrong')
+            toast.error('Something Went Wrong',{ autoClose: 2000 });
             console.error(error)
         }
 

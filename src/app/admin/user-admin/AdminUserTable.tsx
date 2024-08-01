@@ -1,6 +1,12 @@
 import { verifyTokenForPage } from "@/utils/verifyToken";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { getAllUsers } from "@/apiCalls/userApiCall";
+import prisma from "@/utils/db";
+import { User } from "@/utils/types"; // Update import path if needed
+import AdminUsersTableClient from "./AdminUsersTableClient";
+import { NextRequest } from "next/server";
+import { ToastContainer } from "react-toastify";
 
 
 const AdminUsersTable = async () => {
@@ -10,33 +16,29 @@ const AdminUsersTable = async () => {
     const payload = verifyTokenForPage(token);
     if (payload?.isAdmin === false) redirect("/");
 
+    const users: User[] = await getAllUsers();
+    const count: number = await prisma.user.count();
+ async function PATCH(request: NextRequest, { params }: { params: { id: string } }) {
+        try {
+            console.log("Request Params:", params);
+             const body = await request.json();
+            console.log("Request Body:", body);
+    
+            // Other server logic...
+    
+        } catch (error: any) {
+            console.error("Error:", error.message);
+            // Handle error...
+        }
+    }
+    
 
-       return (
+    return (
         <section className="p-5">
             <h1 className="mb-7 text-2xl font-semibold text-gray-700">Users</h1>
-            <table className="table w-full text-left">
-                <thead className="border-t-2 border-b-2 border-gray-500 lg:text-lg">
-                    <tr>
-                        <th className="px-2 p-2 lg:p-2">Username</th>
-                        <th className="px-2 p-2 lg:p-2">Email</th>
-                        <th className="px-2 p-2 lg:p-2">Created At</th>
-                        <th className="px-2 p-2 lg:p-2">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    
-                        <tr className="border-b border-t border-gray-300" >
-                            <td className="p-1 text-gray-700"> 1</td>
-                            <td className=" text-gray-700 font-normal p-3"> 1 </td>
-                            <td className=" text-gray-700 font-normal p-3"> 1 </td>
-                            <td className=" text-gray-700 font-normal p-3"> 1 </td>
-                           
-                        </tr>
-                    
-                </tbody>
-            </table>
-
-                   </section>
+            <AdminUsersTableClient users={users} />
+           
+        </section>
     );
 };
 

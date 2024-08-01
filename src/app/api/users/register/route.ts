@@ -47,7 +47,11 @@ export async function POST(request: NextRequest) {
         const cookie = setCookie({
             id: newUser.id,
             isAdmin: newUser.isAdmin,
-            username: newUser.username
+            username:newUser .usernameو
+            email:newUser.email
+
+
+            
         });
 
         return NextResponse.json({ ...newUser, message: "Registered & Authenticated" }, {

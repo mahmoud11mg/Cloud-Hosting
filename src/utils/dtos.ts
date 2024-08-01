@@ -22,6 +22,7 @@ export interface UpdateUserDto {
     username?: string;
     email?: string;
     password?: string;
+    isAdmin?: boolean;
     
 }
 export interface CreateCommentDto {
@@ -30,5 +31,17 @@ export interface CreateCommentDto {
 }
 export interface UpdateCommentDto {
     text: string;
+}
+export interface CreateUserDto {
+    userName: string;
+    email: string;
+    isAdmin: boolean;
+}
+
+export interface UpdateUserAdminDto {
+    username: string;
+    email: string;
+    isAdmin: boolean
+    
 }
 

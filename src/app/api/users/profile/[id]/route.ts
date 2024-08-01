@@ -127,6 +127,7 @@ export async function PUT(request: NextRequest, { params }: Props) {
                 username: body.username,
                 email: body.email,
                 password: body.password,
+                isAdmin: body.isAdmin,
             }
 
         });

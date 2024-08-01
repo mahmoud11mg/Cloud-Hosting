@@ -54,3 +54,28 @@ export const UpdateUserSchema = z.object({
 
     password: z.string().min(8, { message: "Password Must Be More Than 8 Characters" }).optional(),
 })
+
+export const CreateuserSchema = z.object({
+    userName: z.string(
+        {
+            required_error: "userName required",
+            invalid_type_error: "userName  Should Be Of Type  String",
+        }
+    ).
+        min(3, { message: "userName Must Be More Than 3 Characters" })
+        .max(200, { message: "userName Must Be less Than Or Equal to 200 Characters" }),
+   email: z.string(
+        {
+            required_error: "Email required",
+            invalid_type_error: "Email  Should Be Of Type  String",
+        }
+
+    ).min(10, { message: "Email Must Be less Than Or Equal to 10 Characters" })
+    .max(50, { message: " Email less Than Or Equal to 100 Characters" }).optional(),
+})
+// Update User Admin Schema
+export const UpdateUserAdminSchema = z.object({
+
+  
+    isAdmin: z.boolean().optional(),
+})

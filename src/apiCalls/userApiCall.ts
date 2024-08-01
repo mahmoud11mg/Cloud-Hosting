@@ -1,9 +1,8 @@
 import { DOMAIN } from "@/utils/constants";
 import { User } from "@prisma/client";
 
-// Get All Users
-export async function getAllUsers(id:number | undefined): Promise<User[]> {
-    const response = await fetch(`${DOMAIN}/api/users/profile/${id}`, {
+export async function getAllUsers(): Promise<User[]> {
+    const response = await fetch(`${DOMAIN}/api/users`, {
         cache: 'no-store',
     });
 
