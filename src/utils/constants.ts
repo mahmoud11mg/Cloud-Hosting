@@ -1,3 +1,7 @@
 export const ARTICLE_PER_PAGE = 6;
 export const user_PER_PAGE = 6;
-export const DOMAIN ="https://cloud-hosting-self.vercel.app";
+const PRODUCTION_DOMAIN="https://cloud-hosting-self.vercel.app";
+const DEVELOPMENT_DOMAIN="http://localhost:3000";
+
+export const DOMAIN = process.env.NODE_ENV ==='production'
+? PRODUCTION_DOMAIN : DEVELOPMENT_DOMAIN;

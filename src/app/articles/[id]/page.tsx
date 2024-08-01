@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { getSingleArticle } from "@/apiCalls/articleApiCall";
+// import { getSingleArticle } from "@/apiCalls/articleApiCall";
 import AddCommentForm from "@/components/comments/AddCommentForm";
 import CommentItem from "@/components/comments/CommentItem";
 import { SingleArticle } from "@/utils/types";
 import { verifyTokenForPage } from "@/utils/verifyToken";
 import { cookies } from "next/headers";
+import prisma from "@/utils/db";
+import { notFound } from "next/navigation";
+
 
 interface SingleArticlePageProps {
   params: { id: string; }
@@ -15,7 +18,28 @@ const SingleArticlePage = async ({ params }: SingleArticlePageProps) => {
   const payload = verifyTokenForPage(token);
 
 
-  const article: SingleArticle = await getSingleArticle(params.id);
+  // const article: SingleArticle = await getSingleArticle(params.id);
+  const article = await prisma.article.findUnique({
+    where: { id: parseInt(params.id) },
+    include:{
+       comments:{
+           include:{
+              user:{
+               select:{
+                   username:true,
+                 },
+              },
+           },
+           orderBy: {
+               createdAt: "desc"
+           }
+       },
+    }
+
+    }) as SingleArticle ;
+    if (!article){
+      notFound();
+    }
 
   return (
     <section className="container m-auto px-5">

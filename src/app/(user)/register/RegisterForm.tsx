@@ -24,8 +24,8 @@ const RegisterForm = () => {
             await axios.post(`${DOMAIN}/api/users/register`, { email, password, username });
             router.replace('/'); // No back to login
             setLoading(false);
-            toast.success('Registration successful', { autoClose: 1000 })
             router.refresh();
+            toast.success('Registration successful', { autoClose: 1000 })
         } catch (error: any) {
             toast.error(error?.response?.data?.message || "Registration failed", { autoClose: 1000 })
             console.error(error);

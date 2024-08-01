@@ -23,8 +23,8 @@ const LoginForm = () => {
                 await axios.post(`${DOMAIN}/api/users/login`,{ email, password })
                 router.replace('/') // no back to login
                 setLoading(false);
-                toast.success('LogIn  Successfully', { autoClose: 1000 })
                 router.refresh();
+                toast.success('LogIn  Successfully', { autoClose: 1000 })
 
         }catch(error:any){
             toast.error(error?.response?.data.message, { autoClose: 2000 })

@@ -16,35 +16,39 @@ interface Props {
 */
 export async function DELETE(request: NextRequest, { params }: Props) {
     try {
+        const userId = parseInt(params.id);
+        
+        // Find the user and include their comments
         const user = await prisma.user.findUnique({ 
-            where: { id: parseInt(params.id) } ,
-            include:{
-                comments:true
-            }
+            where: { id: userId },
+            include: {
+                comments: true,
+            },
         });
 
         if (!user) {
             return NextResponse.json({ message: 'User Not Found' }, { status: 404 });
         }
 
+        // Verify the token and get the user making the request
         const userFromToken = verifyToken(request);
-        if (userFromToken !== null && userFromToken.id === user.id) {
-            //Delete User 
-            await prisma.user.delete({ where: { id: parseInt(params.id) } });
-        //Delete Comments thet belongs to the User
-        const commentsId : number[] = user?.comments.map(comment => comment.id);
-        await prisma.comment.deleteMany({ where: { id:{ in:commentsId } } });
 
+        if (userFromToken !== null && (userFromToken.id === user.id || userFromToken.isAdmin)) {
+            // Delete comments that belong to the user
+            const commentsId: number[] = user.comments.map(comment => comment.id);
+            await prisma.comment.deleteMany({ where: { id: { in: commentsId } } });
 
-            return NextResponse.json({ message: 'Your Profile ( account ) has been deleted ' }, { status: 200 });
+            // Delete user
+            await prisma.user.delete({ where: { id: userId } });
+
+            return NextResponse.json({ message: 'User has been deleted' }, { status: 200 });
         }
 
-        return NextResponse.json({ message: 'Only User Himself Can Delete His Profile , Forbidden ' }, { status: 403 }); // 403 Forbidden
-
+        return NextResponse.json({ message: 'Only the user or an admin can delete this profile'}, { status: 403 }); // 403 Forbidden
     } catch (error) {
+        console.error('Error deleting user:', error);
         return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
     }
-
 }
 
 // GET 
@@ -102,10 +106,7 @@ export async function PUT(request: NextRequest, { params }: Props) {
         }
         const userFromToken = verifyToken(request);
 
-        if (userFromToken === null || userFromToken.id !== user.id) {
-
-            return NextResponse.json({ message: 'You Are Not Allowed, Access denied ' }, { status: 403 });
-        }
+        
 
         const body = await request.json() as UpdateUserDto;
         const validation =UpdateUserSchema.safeParse(body);
@@ -139,4 +140,3 @@ export async function PUT(request: NextRequest, { params }: Props) {
     }
 
 }
-

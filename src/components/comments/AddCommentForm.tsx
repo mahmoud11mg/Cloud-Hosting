@@ -21,8 +21,8 @@ const AddCommentForm = ({ articleId } : AppComentFormProps) => {
             try{
                 await axios.post(`${DOMAIN}/api/comments`,{ text, articleId })
                 router.refresh()
-                toast.success(' Comment Add To Articles Successfully', { autoClose: 1000 });
                 setText("")
+                toast.success(' Comment Add To Articles Successfully', { autoClose: 1000 });
                 
 
         }catch(error:any) {
