@@ -1,35 +1,15 @@
-// AdminCommentsTable.tsx
 import { getAllComments } from "@/apiCalls/adminApiCall";
+import { Comment, User } from "@prisma/client";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import DeleteCommentButton from "./DeleteCommentButton";
-
-// Define the types for Comment and User
-type User = {
-  id: number;
-  email: string;
-  username: string;
-  password: string;
-  isAdmin: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-};
-
-type Comment = {
-  id: number;
-  text: string;
-  createdAt: Date;
-  updatedAt: Date;
-  articleId: number;
-  userId: number;
-  user: User;
-};
 
 const AdminCommentsTable = async () => {
   const token = cookies().get("jwtToken")?.value || "";
   if (!token) redirect("/");
 
-  const comments: Comment[] = await getAllComments(token);
+  // Assuming the updated getAllComments returns an array of comments with user details
+  const comments: (Comment & { user: User })[] = await getAllComments(token);
 
   return (
     <section className="p-5">
