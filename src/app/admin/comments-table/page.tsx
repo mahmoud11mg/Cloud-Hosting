@@ -8,9 +8,6 @@ const AdminCommentsTable = async () => {
 
   const token = cookies().get("jwtToken")?.value || "";
   if (!token) redirect("/");
-
-  const payload = verifyTokenForPage(token);
-  if (payload?.isAdmin === false) redirect("/");
    
   const comments : Comment[] =  await getAllComments(token);
 

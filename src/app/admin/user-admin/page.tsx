@@ -9,11 +9,6 @@ import { ToastContainer } from "react-toastify";
 
 
 const Page = async () => {
-  const token = cookies().get("jwtToken")?.value || "";
-  if (!token) redirect("/");
-
-  const payload = verifyTokenForPage(token);
-  if (payload?.isAdmin === false) redirect("/");
    return (
     <div>
         <AdminUsersTable/>

@@ -15,14 +15,15 @@ import { verifyToken } from '@/utils/verifyToken';
  */
 export async function GET(request: NextRequest) {
     try {
-        const pageNumber = request.nextUrl.searchParams.get("pageNumber") || "1" ;
-      
-         const articles = await prisma.article.findMany({
+        const pageNumber = request.nextUrl.searchParams.get("pageNumber") || "1";
+        const articles = await prisma.article.findMany({
             skip: ARTICLE_PER_PAGE * (parseInt(pageNumber) - 1),
             take: ARTICLE_PER_PAGE,
-            orderBy:{createdAt:'desc'}
-            
-         });
+
+
+        });
+        console.log('Fetched Articles:', articles);
+
         return NextResponse.json(articles, { status: 200 });
     } catch (error) {
         console.error(error);
@@ -39,16 +40,16 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
     try {
         const user = verifyToken(request);
-        if (user === null ||user.isAdmin === false) {
+        if (user === null || user.isAdmin === false) {
             return NextResponse.json({ message: "Only Admins, Access denied" }, { status: 403 });
         }
         const body = (await request.json()) as CreateArticleDto;
         const validation = CreateArticleSchema.safeParse(body);
-        
+
         if (!validation.success) {
             return NextResponse.json({ message: validation.error.errors }, { status: 400 });
         }
-        
+
         const newArticle: Article = await prisma.article.create({
             data: {
                 title: body.title,

@@ -2,7 +2,7 @@
 import { DOMAIN } from '@/utils/constants';
 import { Article } from '@prisma/client';
 import axios from 'axios';
-import { useRouter } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 import React, { useState } from 'react'
 import { toast } from 'react-toastify';
 
@@ -24,7 +24,9 @@ const EditArticleForm = ({article}:EditArticleFormProps)  => {
                 await axios .put(`${DOMAIN}/api/articles/${article.id}`,{description,title});
                 
                 toast.success(' Article Updated Successfully', { autoClose: 1000 })
-                router.refresh();
+                 router.push('/admin/articles-table?pageNumber=1');
+                  router.refresh();
+                
 
        
          }catch(error:any){

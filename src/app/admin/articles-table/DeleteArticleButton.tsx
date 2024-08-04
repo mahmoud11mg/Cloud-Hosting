@@ -13,8 +13,8 @@ const DeleteArticleButton = ({articleId}:DeleteArticleButtonProps) => {
         try{
             if(confirm('Are you sure you want to delete Article')){
                 await axios.delete(`${DOMAIN}/api/articles/${articleId}`)
-                router.refresh()
                 toast.success(' Successfully', { autoClose: 1000 })
+                router.refresh()
             }
 
         }catch(error:any){

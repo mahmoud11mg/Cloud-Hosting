@@ -12,11 +12,7 @@ import EditArticleForm from './EditArticleForm';
  }
 
 const EditArticlePage = async ({params}:EditArticlePageProps) => {
-    const token = cookies().get("jwtToken")?.value || "";
-    if (!token) redirect("/");
-  
-    const payload = verifyTokenForPage(token);
-    if (payload?.isAdmin === false) redirect("/");
+
 
     const article :Article =await getSingleArticle(params.id);
 

@@ -8,12 +8,7 @@ import AdminUsersTableClient from "./AdminUsersTableClient";
 import { NextRequest } from "next/server";
 
 const AdminUsersTable = async () => {
-    const token = cookies().get("jwtToken")?.value || "";
-    if (!token) redirect("/");
-
-    const payload = verifyTokenForPage(token);
-    if (payload?.isAdmin === false) redirect("/");
-
+  
     const users: User[] = await getAllUsers();
     const count: number = await prisma.user.count();
     async function PATCH(request: NextRequest, { params }: { params: { id: string } }) {
