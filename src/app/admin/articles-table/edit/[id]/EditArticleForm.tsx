@@ -24,7 +24,7 @@ const EditArticleForm = ({article}:EditArticleFormProps)  => {
                 await axios .put(`${DOMAIN}/api/articles/${article.id}`,{description,title});
                 
                 toast.success(' Article Updated Successfully', { autoClose: 1000 })
-                 router.push('/admin/articles-table?pageNumber=1');
+                 router.push(`/admin/articles-table?pageNumber=1`);
                   router.refresh();
                 
 

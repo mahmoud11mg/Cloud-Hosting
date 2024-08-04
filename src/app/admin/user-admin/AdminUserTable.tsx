@@ -8,8 +8,7 @@ import AdminUsersTableClient from "./AdminUsersTableClient";
 import { NextRequest } from "next/server";
 
 const AdminUsersTable = async () => {
-  
-    const users: User[] = await getAllUsers();
+       const users: User[] = await getAllUsers();
     const count: number = await prisma.user.count();
     async function PATCH(request: NextRequest, { params }: { params: { id: string } }) {
         try {
